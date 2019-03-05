@@ -56,23 +56,26 @@
     accept_hostkey: yes
     version: "{{ slicer_cli_web_version }}"
 
-- name: Clone HistomicsTK
+- name: Clone HistomicsTK (Ken)
   git:
-    repo: https://github.com/DigitalSlideArchive/HistomicsTK.git
+    # repo: https://github.com/DigitalSlideArchive/HistomicsTK.git
+    repo: https://github.com/ShenQianwithC/HistomicsTK-pv.git
     dest: "{{ root_dir }}/HistomicsTK"
     accept_hostkey: yes
     version: "{{ histomicstk_version }}"
 
-- name: Clone large_image plugin
+- name: Clone large_image plugin (Ken)
   git:
-    repo: https://github.com/girder/large_image.git
+    # repo: https://github.com/girder/large_image.git
+    repo: https://github.com/ShenQianwithC/large_image-pv.git
     dest: "{{ root_dir }}/large_image"
     accept_hostkey: yes
     version: "{{ large_image_version }}"
 
-- name: Clone DSA plugin
+- name: Clone DSA plugin (Ken)
   git:
-    repo: https://github.com/DigitalSlideArchive/digital_slide_archive.git
+    # repo: https://github.com/DigitalSlideArchive/digital_slide_archive.git
+    repo: https://github.com/ShenQianwithC/digital_slide_archive-pv.git
     dest: "{{ root_dir }}/digital_slide_archive"
     accept_hostkey: yes
     version: "{{ dsa_version }}"

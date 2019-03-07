@@ -1,2 +1,2 @@
 # - src: girder.girder
-- src: shenqianwithc.ansible_role_girder_pv
+- src: https://github.com/ShenQianwithC/girder.girder

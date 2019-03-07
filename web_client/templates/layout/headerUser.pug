@@ -4,21 +4,17 @@ if user
     | #[span.icon-user] #{login} #[span.icon-down-open]
   ul.dropdown-menu(role='menu')
     li
-      a.g-my-folders(href=`../girder#jobs/user/${user.id}`, target='girder')
-        i.icon-tasks
-        | My jobs
-    li
       a.g-my-settings(href=`../girder#useraccount/${user.id}/info`, target='girder')
-        i.icon-cog
-        | My account
+        i
+        | 我的账户
     li.divider
     li
       a.g-logout
-        i.icon-logout
-        | Log out
+        i
+        | 退出
 else
   p.navbar-text
-    a.navbar-link.g-register Register
+    a.navbar-link.g-register 注册
     | #{' or '}
-    a.navbar-link.g-login Log In
-      i.icon-login
+    a.navbar-link.g-login 登录
+      i

@@ -4,10 +4,10 @@
       .modal-header
         button.close(type='button', data-dismiss='modal', aria-label='Close')
           span(aria-hidden='true') &times;
-        h4.modal-title Edit Area
+        h4.modal-title 编辑区域
       .modal-body
         .form-group
-          label(for='h-element-mag') Magnification
+          label(for='h-element-mag') 放大率
           input#h-element-mag.update-form.input-sm.form-control(
             type='number', min=1, max=maxMag, step=0.1, value=magnification)
         .form-group
@@ -17,24 +17,24 @@
             option PNG
             option TIFF
         .form-group
-          label(for='h-element-width') Width
+          label(for='h-element-width') 宽度
           input#h-element-width.update-form.form-control(
             type='text', min=0, step=1, value=scaleWidth, disabled)
         .form-group
-          label(for='h-element-height') Height
+          label(for='h-element-height') 高度
           input#h-element-height.update-form.form-control(
             type='text', min=0, step=1, value=scaleHeight, disabled)
         .form-group
-          label(for='nb-pixel') Number of Pixels
+          label(for='nb-pixel') 像素数
           input#h-nb-pixel.update-form.form-control(
             type='text', value=numberOfPixel, disabled)
         .form-group
-          label(for='size-file') Approximate size of the file
+          label(for='size-file') 文件大小
           input#h-size-file.update-form.form-control(type='text', value=fileSize, disabled)
       .modal-footer
         span#h-msgDisable.g-validation-failed-message
-          | Size > 1GB : Please select a smaller area.
+          | Size > 1GB : 请选择较小的区域
         a#h-download-area-link.h-download-link.btn.btn-small.btn-primary
           i.icon-download
-          |  Download
-        button.btn.btn-small.btn-default(data-dismiss='modal') Cancel
+          |  下载
+        button.btn.btn-small.btn-default(data-dismiss='modal') 取消

@@ -14,19 +14,21 @@ if parentChain
               i.icon-user
               = parent.object.login
             else if (parent.type === "collection")
-              i.icon-sitemap
+              i.icon-home
               = parent.object.name
             else
+              i.icon-archive
               = parent.object.name
       li
         span.g-item-breadcrumb-link(data-id=image.id, data-type='item')
+          i.icon-docs
           = image.name()
-button.btn.btn-default.navbar-btn.h-open-annotated-image(type='button')
-  | #[span.icon-list] Annotated images...
-button.btn.btn-default.navbar-btn.h-open-image(type='button')
-  | #[span.icon-picture] Open image...
-span.h-links
-  a.h-previous-image.btn.btn-default(href=previousImageLink, title='Previous image', disabled=!previousImageLink)
-    i.icon-left-open
-  a.h-next-image.btn.btn-default(href=nextImageLink, title='Next image', disabled=!nextImageLink)
-    i.icon-right-open
+
+button.g-hierarchy-level-up.btn.btn-default.navbar-btn(type='button', onclick="history.go(-1)")
+  | #[span] 返回病理图像库
+// button.btn.btn-default.navbar-btn.h-open-image(type='button')
+//   | #[span] 打开图像
+// button.btn.btn-default.navbar-btn.h-open-annotated-image(type='button')
+//   | #[span] 标注文件
+// button.btn.btn-default.navbar-btn(type='button',  onclick="location.href='http://localhost:8080/#collections'")
+//   | #[span] 返回病理图片库

@@ -10,17 +10,17 @@ var dialog;
 function createDialog() {
     var widget = new BrowserWidget({
         parentView: null,
-        titleText: 'Select a slide...',
-        submitText: 'Open',
+        titleText: '图像选择',
+        submitText: '打开',
         showItems: true,
         selectItem: true,
-        helpText: 'Click on a slide item to open.',
+        helpText: '请选择要打开的图像',
         rootSelectorSettings: {
             pageLimit: 50
         },
         validate: function (item) {
             if (!item.has('largeImage')) {
-                return $.Deferred().reject('Please select a "large image" item.').promise();
+                return $.Deferred().reject('请选择 "large image" 图像.').promise();
             }
             return $.Deferred().resolve().promise();
         }

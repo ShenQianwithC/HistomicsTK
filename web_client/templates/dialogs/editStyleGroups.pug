@@ -4,56 +4,33 @@
       .modal-header
         button.close(type='button', data-dismiss='modal', aria-label='Close')
           span(aria-hidden='true') &times;
-        h4.modal-title Edit annotation styles
+        h4.modal-title 设置标注样式
       .modal-body
         - var label = model.get('label') || {};
         .form-group
-          label(for='h-group-name') Name
           if newStyle
             .input-group
-              input.form-control.input-sm.h-new-group-name(type='text')
+              input.form-control.input-sm.h-new-group-name(type='hidden')
               .input-group-btn
                 button.btn.btn-default.btn-sm.h-save-new-style
                   span.icon-ok
           else
             .input-group
-              select.form-control.h-group-name
-                each style in collection.sortBy('id')
-                  - var selected = model.id === style.id
-                  option(value=style.get('id'), selected=selected)
-                    = style.get('id')
-              .input-group-btn
-                if collection.length > 1
-                  button.btn.btn-default.h-delete-style
-                    span.icon-minus(data-toggle='tooltip', title='Delete the listed style')
-                button.btn.btn-default.h-create-new-style
-                  span.icon-plus(data-toggle='tooltip', title='Create a new style')
+              input.form-control.h-group-name(type='hidden', value='default')
         .form-group
-          label(for='h-element-label') Label
-          input#h-element-label.h-style-def.input-sm.form-control(
-            type='text', placeholder='Enter an optional label applied to all elements', value=label.value)
-        .form-group
-          label(for='h-element-line-width') Line width
+          label(for='h-element-line-width') 线宽
           input#h-element-line-width.h-style-def.input-sm.form-control(
             type='number', min=0, step=0.1, value=model.get('lineWidth'))
         .form-group
-          label(for='h-element-line-color') Line color
+          label(for='h-element-line-color') 线色
           .input-group.h-colorpicker
             input#h-element-line-color.input-sm.form-control(
               type='text', value=model.get('lineColor'))
             span.input-group-addon
               i
-        .form-group
-          label(for='h-element-fill-color') Fill color
-          .input-group.h-colorpicker
-            input#h-element-fill-color.input-sm.form-control(
-              type='text', value=model.get('fillColor'))
-            span.input-group-addon
-              i
         .g-validation-failed-message.hidden
       .modal-footer
-        button#h-reset-defaults.btn.btn-small.btn-default.h-btn-left(type='button') Reset to Defaults
-        if user.get && user.get('admin')
-          button#h-set-defaults.btn.btn-small.btn-default.h-btn-left(type='button') Save as Defaults
-        button.btn.btn-small.btn-default.h-cancel(type='button', data-dismiss='modal') Cancel
-        button.btn.btn-small.btn-primary.h-submit(type='submit') Save
+        button.back.btn.btn-small.btn-default.h-cancel(type='button', data-dismiss='modal') 取消
+          i.icon-cancel-circled
+        button.button.btn.btn-small.btn-primary.h-submit(type='submit') 保存
+          i.icon-floppy

@@ -3,16 +3,16 @@
     .modal-header
       button.close(type='button', data-dismiss='modal', aria-label='Close')
         span(aria-hidden='true') &times;
-      h4.modal-title Select a recently annotated image to open
+      h4.modal-title 选择最近注释的图像
     .modal-body
       form.form-inline
         .form-group
-          label(for='h-image-name') Image Name
+          label(for='h-image-name') 图像名
           input#h-image-name.form-control(type='text', value=imageName)
         .form-group
-          label(for='h-annotation-creator') Creator
+          label(for='h-annotation-creator') 创建者
           select#h-annotation-creator.form-control(type='text')
-            option(value='', selected= !creator) Any user
+            option(value='', selected= !creator) 任何人
             for user in users.models
               option(value=user.id, selected= creator === user.id)
                 = user.get('login')

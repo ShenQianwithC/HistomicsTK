@@ -72,9 +72,9 @@ var ZoomWidget = Panel.extend({
 
         this.$el.html(zoomWidget({
             id: 'zoom-panel-container',
-            title: 'Zoom',
-            title_download_view: 'Download View',
-            title_download_area: 'Download Area',
+            title: '缩放',
+            title_download_view: '当前视图下载',
+            title_download_area: '选择区域下载',
             min: min,
             max: max,
             maxNaturalMag: this._maxNaturalMag + 0.01,

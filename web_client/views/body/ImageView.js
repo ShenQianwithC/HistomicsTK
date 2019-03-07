@@ -8,6 +8,12 @@ import ItemModel from 'girder/models/ItemModel';
 import FileModel from 'girder/models/FileModel';
 import FolderCollection from 'girder/collections/FolderCollection';
 import GeojsViewer from 'girder_plugins/large_image/views/imageViewerWidget/geojs';
+
+import LeafletViewer from 'girder_plugins/large_image/views/imageViewerWidget/leaflet';
+import OpenlayersViewer from 'girder_plugins/large_image/views/imageViewerWidget/openlayers';
+import OpenseadragonViewer from 'girder_plugins/large_image/views/imageViewerWidget/openseadragon';
+import SlideatlasViewer from 'girder_plugins/large_image/views/imageViewerWidget/slideatlas';
+
 import SlicerPanelGroup from 'girder_plugins/slicer_cli_web/views/PanelGroup';
 import AnnotationModel from 'girder_plugins/large_image/models/AnnotationModel';
 import AnnotationCollection from 'girder_plugins/large_image/collections/AnnotationCollection';
@@ -32,7 +38,6 @@ var ImageView = View.extend({
     },
     initialize(settings) {
         this.viewerWidget = null;
-        this._mouseClickQueue = [];
         this._openId = null;
         this._displayedRegion = null;
         this.selectedAnnotation = new AnnotationModel({_id: 'selected'});
@@ -72,9 +77,6 @@ var ImageView = View.extend({
             collection: this.selectedElements
         });
 
-        this.listenTo(this.annotationSelector, 'h:groupCount', (obj) => {
-            this.contextMenu.setGroupCount(obj);
-        });
         this.listenTo(events, 'h:submit', (data) => {
             this.$('.s-jobs-panel .s-panel-controls .icon-down-open').click();
             events.trigger('g:alert', {type: 'success', text: 'Analysis job submitted.'});
@@ -86,7 +88,6 @@ var ImageView = View.extend({
         this.listenTo(this.annotationSelector, 'h:editAnnotation', this._editAnnotation);
         this.listenTo(this.annotationSelector, 'h:deleteAnnotation', this._deleteAnnotation);
         this.listenTo(this.annotationSelector, 'h:annotationOpacity', this._setAnnotationOpacity);
-        this.listenTo(this.annotationSelector, 'h:annotationFillOpacity', this._setAnnotationFillOpacity);
         this.listenTo(this.annotationSelector, 'h:redraw', this._redrawAnnotation);
         this.listenTo(this, 'h:highlightAnnotation', this._highlightAnnotationForInteractiveMode);
         this.listenTo(this.contextMenu, 'h:edit', this._editElement);
@@ -112,6 +113,9 @@ var ImageView = View.extend({
             }
         });
         this.render();
+        console.log('(#####)ImageViewe.js:initialize():$(document) = ', $(document))
+//         $(document).getElementById('h-annotation-group-name-pv').click();
+//         $(document).getElementById('h-annotation-name-pv').click();
     },
     render() {
         // Ensure annotations are removed from the popover widget on rerender.
@@ -132,7 +136,13 @@ var ImageView = View.extend({
             if (this.viewerWidget) {
                 this.viewerWidget.destroy();
             }
+            console.log('(#####)ImageView.js:render():this = ', this)
             this.viewerWidget = new GeojsViewer({
+//             this.viewerWidget = new OpenseadragonViewer({
+//             this.viewerWidget = new OpenlayersViewer({
+//             this.viewerWidget = new SlideatlasViewer({
+//             this.viewerWidget = new LeafletViewer({
+//             this.viewerWidget = new OpenlayersViewer({
                 parentView: this,
                 el: this.$('.h-image-view-container'),
                 itemId: this.model.id,
@@ -154,17 +164,6 @@ var ImageView = View.extend({
                 events.trigger('h:imageOpened', this.model);
                 // store a reference to the underlying viewer
                 this.viewer = this.viewerWidget.viewer;
-
-                this.imageWidth = this.viewer.maxBounds().right;
-                this.imageHeight = this.viewer.maxBounds().bottom;
-                // allow panning off the image slightly
-                var extraPanWidth = 0.1, extraPanHeight = 0;
-                this.viewer.maxBounds({
-                    left: -this.imageWidth * extraPanWidth,
-                    right: this.imageWidth * (1 + extraPanWidth),
-                    top: -this.imageHeight * extraPanHeight,
-                    bottom: this.imageHeight * (1 + extraPanHeight)
-                });
 
                 // set the viewer bounds on first load
                 this.setImageBounds();
@@ -374,7 +373,9 @@ var ImageView = View.extend({
     setBoundsQuery() {
         var bounds, left, right, top, bottom, rotation;
         if (this.viewer) {
+//             console.log('(#####)ImageView.js:setBoundsQuery():this.viewer = ', this.viewer)
             bounds = this.viewer.bounds();
+//             console.log('(#####)ImageView.js:setBoundsQuery():bounds = ', bounds)
             rotation = (this.viewer.rotation() * 180 / Math.PI).toFixed();
             left = bounds.left.toFixed();
             right = bounds.right.toFixed();
@@ -419,11 +420,6 @@ var ImageView = View.extend({
             }
             annotation.set('loading', true);
             annotation.fetch().then(() => {
-                // abandon this if the annotation should not longer be shown
-                // or we are now showing a different image.
-                if (!annotation.get('displayed') || annotation.get('itemId') !== this.model.id) {
-                    return null;
-                }
                 this.viewerWidget.drawAnnotation(annotation);
                 return null;
             }).always(() => {
@@ -585,56 +581,15 @@ var ImageView = View.extend({
             return;
         }
 
-        /*
-         * Click events on geojs features are triggered once per feature in a single animation frame.
-         * Here we collect all click events occurring in a single animation frame and defer processing.
-         * On the next frame, the queue is processed and the action is only performed on the "closest"
-         * feature.  Here "closest" is determined by a fast heuristic--the one with a vertex closest
-         * to the point clicked.  We can improve this heuristic as necessary.
-         */
-        this._queueMouseClickAction(element, annotationId, evt.data.geometry, evt.mouse.geo);
-        if (this._mouseClickQueue.length > 1) {
-            return;
+        if (evt.mouse.buttonsDown.right) {
+            this._openContextMenu(element.annotation.elements().get(element.id), annotationId, evt);
+        } else if (evt.mouse.modifiers.ctrl) {
+            this._toggleSelectElement(element.annotation.elements().get(element.id));
         }
-
-        window.requestAnimationFrame(() => {
-            const { element, annotationId } = this._processMouseClickQueue();
-            if (evt.mouse.buttonsDown.right) {
-                this._openContextMenu(element.annotation.elements().get(element.id), annotationId, evt);
-            } else if (evt.mouse.modifiers.ctrl) {
-                this._toggleSelectElement(element.annotation.elements().get(element.id));
-            }
-        });
     },
 
     toggleLabels(options) {
         this.popover.toggle(options.show);
-    },
-
-    _queueMouseClickAction(element, annotationId, geometry, center) {
-        let minimumDistance = Number.POSITIVE_INFINITY;
-        if (geometry.type !== 'Polygon') {
-            // We don't current try to resolve any other geometry type, for the moment,
-            // any point or line clicked on will always be chosen over a polygon.
-            minimumDistance = 0;
-        } else {
-            const points = geometry.coordinates[0];
-            // use an explicit loop for speed
-            for (let index = 0; index < points.length; index += 1) {
-                const point = points[index];
-                const dx = point[0] - center.x;
-                const dy = point[1] - center.y;
-                const distance = dx * dx + dy * dy;
-                minimumDistance = Math.min(minimumDistance, distance);
-            }
-        }
-        this._mouseClickQueue.push({ element, annotationId, value: minimumDistance });
-    },
-
-    _processMouseClickQueue(evt) {
-        const sorted = _.sortBy(this._mouseClickQueue, _.property('value'));
-        this._mouseClickQueue = [];
-        return sorted[0];
     },
 
     _toggleInteractiveMode(interactive) {
@@ -690,10 +645,6 @@ var ImageView = View.extend({
         this.viewerWidget.setGlobalAnnotationOpacity(opacity);
     },
 
-    _setAnnotationFillOpacity(opacity) {
-        this.viewerWidget.setGlobalAnnotationFillOpacity(opacity);
-    },
-
     _onKeyDown(evt) {
         if (evt.key === 'a') {
             this._showOrHideAnnotations();
@@ -722,31 +673,13 @@ var ImageView = View.extend({
         // Defer the context menu action into the next animation frame
         // to work around a problem with preventDefault on Windows
         window.setTimeout(() => {
-            const $window = $(window);
             const menu = this.$('#h-annotation-context-menu');
             const position = evt.mouse.page;
             menu.removeClass('hidden');
-
-            // adjust the vertical position of the context menu
-            // == 0, above the bottom; < 0, number of pixels below the bottom
-            // the menu height is bigger by 20 pixels due to extra padding
-            const belowWindow = Math.min(0, $window.height() - position.y - menu.height() + 20);
-            // ensure the top is not above the top of the window
-            const top = Math.max(0, position.y + belowWindow);
-
-            // Put the context menu to the left of the cursor if it is too close
-            // to the right edge.
-            const windowWidth = $window.width();
-            const menuWidth = menu.width();
-            let left = position.x;
-            if (left + menuWidth > windowWidth) {
-                left -= menuWidth;
-            }
-            left = Math.max(left, 0);
-
-            menu.css({ left, top });
+            menu.css({ left: position.x, top: position.y });
             this.popover.collection.reset();
             this._contextMenuActive = true;
+            // this.contextMenu.setHovered(element, annotation);
         }, 1);
     },
 

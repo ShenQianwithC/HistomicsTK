@@ -1,42 +1,38 @@
 extends ./panel.pug
 
 block title
-  | #[span.icon-pencil] #{title} #[span.h-panel-name #{name}]
+  | #[span.icon-pencil] 描画 #[span.h-panel-name #{name}]
 
 block content
   .input-group.input-group-sm.h-style-group-row
-    select.form-control.h-style-group
-      each group in groups.sortBy('id')
-        option(value=group.id, selected=group.id === style)
-          = group.id
     .input-group-btn
-      button.btn.btn-default.h-configure-style-group(type='button')
-        span.icon-cog(data-toggle='tooltip', title='Configure style group')
+      button.btn.btn-sm.btn-primary.h-toggle-annotation.h-float-left.h-configure-style-group(type='button')
+        span.icon-tools(data-toggle='tooltip', title='设置描画样式') 设置描画样式
   .btn-group.btn-justified.btn-group-sm.h-draw-tools
     .btn-group.btn-group-sm
       button.h-draw.btn.btn-default(
-        type='button', data-type='point', data-toggle='tooltip', title='Draw a new point', class=drawingType === 'point' ? 'active' : null)
-        | #[span.icon-circle-empty]Point
+        type='button', data-type='rectangle', data-toggle='tooltip', title='矩形标注', class=drawingType === 'rectangle' ? 'active' : null)
+        | 矩 形 #[span.icon-doc-landscape]
     .btn-group.btn-group-sm
       button.h-draw.btn.btn-default(
-        type='button', data-type='rectangle', data-toggle='tooltip', title='Draw a new rectangle', class=drawingType === 'rectangle' ? 'active' : null)
-        | #[span.icon-check-empty]Rectangle
+        type='button', data-type='polygon', data-toggle='tooltip', title='多边形标注', class=drawingType === 'polygon' ? 'active' : null)
+        | 多边形#[span.icon-star-empty]
     .btn-group.btn-group-sm
       button.h-draw.btn.btn-default(
-        type='button', data-type='polygon', data-toggle='tooltip', title='Draw a new polygon', class=drawingType === 'polygon' ? 'active' : null)
-        | #[span.icon-star-empty]Polygon
+        type='button', data-type='line', data-toggle='tooltip', title='线标注', class=drawingType === 'line' ? 'active' : null)
+        | 曲 线 #[span.icon-google-circles]
     .btn-group.btn-group-sm
       button.h-draw.btn.btn-default(
-        type='button', data-type='line', data-toggle='tooltip', title='Draw a new line', class=drawingType === 'line' ? 'active' : null)
-        | #[span.icon-pencil]Line
+        type='button', data-type='point', data-toggle='tooltip', title='点标注', class=drawingType === 'point' ? 'active' : null)
+        | 点 #[span.icon-record]
 
   if elements.length
     .h-elements-container
       each element in elements
         - var classes = highlighted[element.id] ? ['h-highlight-element'] : [];
         - element = element.toJSON();
-        - var label = (element.label || {}).value || (element.type === 'polyline' ? (element.closed ? 'polygon' : 'line') : element.type);
+        - var label = (element.label || {}).value || (element.type === 'polyline' ? (element.closed ? '多边形' : '曲线') : (element.type === 'rectangle' ? '矩形' : '点'));
         .h-element(data-id=element.id, class=classes)
-          span.icon-cog.h-edit-element(data-toggle='tooltip', title='Change style')
+          span.icon-cog.h-edit-element(data-toggle='tooltip', title='更改样式')
           span.h-element-label #{label}
-          span.icon-cancel.h-delete-element(data-toggle='tooltip', title='Remove')
+          span.icon-cancel.h-delete-element(data-toggle='tooltip', title='删除')

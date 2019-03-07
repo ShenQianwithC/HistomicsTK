@@ -1,40 +1,14 @@
 .modal-dialog(role='document')
   .modal-content
     form.modal-form(role='form')
-      .modal-header
-        button.close(type='button', data-dismiss='modal', aria-label='Close')
-          span(aria-hidden='true') &times;
-        h4.modal-title #{title}
       .modal-body
         .form-group
-          label(for='h-annotation-name') Name
+          label(for='h-annotation-name') 名称
           input#h-annotation-name.input-sm.form-control(
-            type='text', placeholder='Enter a name for the annotation', value=annotation.name)
-        .form-group
-          label(for='h-annotation-description') Description
-          textarea#h-annotation-description.form-control.input-sm(
-            rows='6', placeholder='Enter an optional description')
-            | #{annotation.description}
-        if showStyleEditor
-          hr
-          h4 Reset the style for all elements in this annotation
-          .form-group
-            label(for='h-annotation-line-color') Line color
-            .input-group.h-colorpicker
-              input#h-annotation-line-color.input-sm.form-control(
-                type='text')
-              span.input-group-addon
-                i
-          .form-group
-            label(for='h-annotation-fill-color') Fill color
-            .input-group.h-colorpicker
-              input#h-annotation-fill-color.input-sm.form-control(
-                type='text')
-              span.input-group-addon
-                i
+            type='text', placeholder='输入标注名称', value=annotation.name)
         .g-validation-failed-message.hidden
       .modal-footer
-        if hasAdmin
-          button.btn.btn-small.btn-warning.h-access(type='button') Permissions
-        button.btn.btn-small.btn-default.h-cancel(type='button', data-dismiss='modal') Cancel
-        button.btn.btn-small.btn-primary.h-submit(type='submit') Save
+        button.back.btn.btn-small.btn-default.h-cancel(type='button', data-dismiss='modal') 取消
+          i.icon-cancel-circled
+        button.button.btn.btn-small.btn-primary.h-submit(type='submit') 保存
+          i.icon-floppy

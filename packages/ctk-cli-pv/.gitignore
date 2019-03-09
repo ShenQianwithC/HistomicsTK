@@ -1,0 +1,18 @@
+*~
+*.py[oc]
+
+.DS_Store
+
+build/
+dist/
+sdist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Sphinx
+docs/_build
+
+# IDE junk
+.idea/*
+*.swps

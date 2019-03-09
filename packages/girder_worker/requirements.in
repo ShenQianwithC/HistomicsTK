@@ -1,0 +1,12 @@
+celery>=4,<4.2
+funcsigs ; python_version < '3.3'
+girder-client>=2
+networkx<2
+pymongo>=3
+requests[security]
+six
+setuptools_scm
+stevedore
+jsonpickle
+girder_worker_utils>=0.8.4
+docker>=2.6.0

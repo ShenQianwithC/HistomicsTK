@@ -1,0 +1,16 @@
+prune analysis
+prune examples
+prune tests
+prune devops
+prune docs
+include LICENSE
+include setup.py
+include requirements.in
+include README.rst
+include girder_worker/worker.dist.cfg
+graft girder_worker/format
+graft girder_worker/plugins
+graft girder_worker/girder/web_client
+global-exclude *.pyc *.pyo *.cmake
+prune girder_worker/plugins/*/tests
+prune girder_worker/core/tests

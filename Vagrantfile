@@ -11,7 +11,8 @@ Vagrant.configure("2") do |config|
 
   # The exposed ports can be changed here; the ssh port is never necessary.
   config.vm.network "forwarded_port", guest: 22, host: 2209
-  config.vm.network "forwarded_port", guest: 8080, host: 8009
+  # config.vm.network "forwarded_port", guest: 8080, host: 8009
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.provider "virtualbox" do |v|
     v.name = "pvWeb Ubuntu 16.04"
     # You may need to configure this to run benignly on your host machine

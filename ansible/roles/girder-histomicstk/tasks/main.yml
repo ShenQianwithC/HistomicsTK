@@ -43,15 +43,17 @@
   shell: "npm install -g node-gyp-install && /usr/lib/node_modules/node-gyp-install/bin.js"
   become: true
 
-- name: Clone ctk-cli
+- name: Clone ctk-cli (Ken)
   git:
-    repo: https://github.com/cdeepakroy/ctk-cli.git
+    # repo: https://github.com/cdeepakroy/ctk-cli.git
+    repo: https://github.com/ShenQianwithC/ctk-cli.git
     dest: "{{ root_dir }}/ctk-cli"
     accept_hostkey: yes
 
-- name: Clone slicer_cli_web plugin
+- name: Clone slicer_cli_web plugin (Ken)
   git:
-    repo: https://github.com/girder/slicer_cli_web.git
+    # repo: https://github.com/girder/slicer_cli_web.git
+    repo: https://github.com/ShenQianwithC/slicer_cli_web.git
     dest: "{{ root_dir }}/slicer_cli_web"
     accept_hostkey: yes
     version: "{{ slicer_cli_web_version }}"
@@ -80,9 +82,10 @@
     accept_hostkey: yes
     version: "{{ dsa_version }}"
 
-- name: Clone xtk_demo plugin
+- name: Clone xtk_demo plugin (Ken)
   git:
-    repo: https://github.com/zachmullen/xtk_demo.git
+    # repo: https://github.com/zachmullen/xtk_demo.git
+    repo: https://github.com/ShenQianwithC/xtk_demo.git
     dest: "{{ root_dir }}/xtk_demo"
     accept_hostkey: yes
     version: "master"

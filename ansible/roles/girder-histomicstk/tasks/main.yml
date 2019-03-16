@@ -46,14 +46,14 @@
 - name: Clone ctk-cli (Ken)
   git:
     # repo: https://github.com/cdeepakroy/ctk-cli.git
-    repo: https://github.com/ShenQianwithC/ctk-cli.git
+    repo: git://github.com/ShenQianwithC/ctk-cli.git
     dest: "{{ root_dir }}/ctk-cli"
     accept_hostkey: yes
 
 - name: Clone slicer_cli_web plugin (Ken)
   git:
     # repo: https://github.com/girder/slicer_cli_web.git
-    repo: https://github.com/ShenQianwithC/slicer_cli_web.git
+    repo: git://github.com/ShenQianwithC/slicer_cli_web.git
     dest: "{{ root_dir }}/slicer_cli_web"
     accept_hostkey: yes
     version: "{{ slicer_cli_web_version }}"
@@ -61,7 +61,7 @@
 - name: Clone HistomicsTK (Ken)
   git:
     # repo: https://github.com/DigitalSlideArchive/HistomicsTK.git
-    repo: https://github.com/ShenQianwithC/HistomicsTK-pv.git
+    repo: git://github.com/ShenQianwithC/HistomicsTK-pv.git
     dest: "{{ root_dir }}/HistomicsTK"
     accept_hostkey: yes
     version: "{{ histomicstk_version }}"
@@ -69,7 +69,7 @@
 - name: Clone large_image plugin (Ken)
   git:
     # repo: https://github.com/girder/large_image.git
-    repo: https://github.com/ShenQianwithC/large_image-pv.git
+    repo: git://github.com/ShenQianwithC/large_image-pv.git
     dest: "{{ root_dir }}/large_image"
     accept_hostkey: yes
     version: "{{ large_image_version }}"
@@ -77,7 +77,7 @@
 - name: Clone DSA plugin (Ken)
   git:
     # repo: https://github.com/DigitalSlideArchive/digital_slide_archive.git
-    repo: https://github.com/ShenQianwithC/digital_slide_archive-pv.git
+    repo: git://github.com/ShenQianwithC/digital_slide_archive-pv.git
     dest: "{{ root_dir }}/digital_slide_archive"
     accept_hostkey: yes
     version: "{{ dsa_version }}"
@@ -85,7 +85,7 @@
 - name: Clone xtk_demo plugin (Ken)
   git:
     # repo: https://github.com/zachmullen/xtk_demo.git
-    repo: https://github.com/ShenQianwithC/xtk_demo.git
+    repo: git://github.com/ShenQianwithC/xtk_demo.git
     dest: "{{ root_dir }}/xtk_demo"
     accept_hostkey: yes
     version: "master"

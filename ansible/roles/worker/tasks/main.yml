@@ -36,10 +36,11 @@
   become: true
   when: docker is undefined
 
-- name: Clone girder_worker
+- name: Clone girder_worker (Ken)
   become: true
   git:
-      repo: git://github.com/girder/girder_worker.git
+      # repo: git://github.com/girder/girder_worker.git
+      repo: git://github.com/ShenQianwithC/girder_worker.git
       dest: /opt/girder_worker
       accept_hostkey: yes
       force: yes

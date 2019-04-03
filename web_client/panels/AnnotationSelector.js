@@ -52,7 +52,7 @@ var AnnotationSelector = Panel.extend({
     initialize(settings = {}) {
         // console.log('(#####)AnnotationSelector.js:initialize():this = ', this);
         this._expandedGroups = new Set();
-        this._opacity = settings.opacity || 1;
+        this._opacity = settings.opacity || 0.9;
         this.listenTo(this.collection, 'sync remove update reset change:displayed change:loading', this.render);
         this.listenTo(this.collection, 'change:highlight', this._changeAnnotationHighlight);
         this.listenTo(eventStream, 'g:event.job_status', _.debounce(this._onJobUpdate, 500));
@@ -89,24 +89,24 @@ var AnnotationSelector = Panel.extend({
         this.$('[data-toggle="tooltip"]').tooltip({container: 'body'});
         this._changeGlobalOpacity();
         // console.log('(#####)AnnotationSelector.js:render():Ano-list', document.getElementById('h-annotation-group-name-pv'));
-        if ((document.getElementById('h-annotation-group-name-pv'))) {
-            // console.log('(#####)AnnotationSelector.js:render():clicked_1', clicked);
-            if (!clicked){
-                // console.log('(#####)AnnotationSelector.js:render():clicked_2', clicked);
-                document.getElementById('h-annotation-group-name-pv').click();
-                // $("#h-annotation-group-name-pv").attr('id','h-annotation-group-name-pv-clicked')
-                // console.log('(#####)AnnotationSelector.js:render():ano-Name', document.getElementById('h-annotation-name-pv'));
-                if ((document.getElementById('h-annotation-name-pv'))) {
-                    // console.log('(#####)AnnotationSelector.js:render():clicked_3', clicked);
-                    // document.getElementById('h-annotation-name-pv').click();
-                    $(document).ready(function(){
-                        document.getElementById('h-annotation-name-pv').click();
-                    });
-                }
-                clicked = true;
-            }
-        }
-        this.toggleInteractiveMode()
+        // if ((document.getElementById('h-annotation-group-name-pv'))) {
+        //     // console.log('(#####)AnnotationSelector.js:render():clicked_1', clicked);
+        //     if (!clicked){
+        //         // console.log('(#####)AnnotationSelector.js:render():clicked_2', clicked);
+        //         // document.getElementById('h-annotation-group-name-pv').click();
+        //         // $("#h-annotation-group-name-pv").attr('id','h-annotation-group-name-pv-clicked')
+        //         // console.log('(#####)AnnotationSelector.js:render():ano-Name', document.getElementById('h-annotation-name-pv'));
+        //         if ((document.getElementById('h-annotation-name-pv'))) {
+        //             // console.log('(#####)AnnotationSelector.js:render():clicked_3', clicked);
+        //             // document.getElementById('h-annotation-name-pv').click();
+        //             $(document).ready(function(){
+        //                 // document.getElementById('h-annotation-name-pv').click();
+        //             });
+        //         }
+        //         clicked = true;
+        //     }
+        // }
+        // this.toggleInteractiveMode()
         return this;
     },
 
@@ -180,13 +180,11 @@ var AnnotationSelector = Panel.extend({
                 message: `确定删除所有标注?`,
                 submitButton: 'Delete',
                 onSubmit: () => {
-                    // this.trigger('h:deleteAnnotation', model); // delete DrawWidget panel from page
-                    console.log('(#####)AnnotationSelector.js:deleteAnnotation():model = ', model);
-                    console.log('(#####)AnnotationSelector.js:deleteAnnotation():  this.collection = ', this.collection);
+                    this.trigger('h:deleteAnnotation', model); // delete DrawWidget panel from page
                     model.unset('displayed'); // Hide Ano in image
                     model.unset('highlight');
-                    // this.collection.remove(model);    // delete AnnotationSelector panel from page
-                    // model.destroy(); // delete documents from DB
+                    this.collection.remove(model);    // delete AnnotationSelector panel from page
+                    model.destroy(); // delete documents from DB
                 }
             });
         }

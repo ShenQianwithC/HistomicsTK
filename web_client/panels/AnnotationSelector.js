@@ -156,9 +156,10 @@ var AnnotationSelector = Panel.extend({
      * `displayed` attribute of the `AnnotationModel`.
      */
     toggleAnnotation(evt) {
-        // console.log('(#####)AnnotationSelector.js:toggleAnnotation():evt = ', evt);
         var id = $(evt.currentTarget).parents('.h-annotation').data('id');
         var model = this.collection.get(id);
+        console.log('(#####)AnnotationSelector.js:toggleAnnotation():$(evt.currentTarget).parents = ', $(evt.currentTarget).parents);
+        console.log('(#####)AnnotationSelector.js:toggleAnnotation():model = ', model);
         model.set('displayed', !model.get('displayed'));
         if (!model.get('displayed')) {
             model.unset('highlight');
@@ -177,7 +178,7 @@ var AnnotationSelector = Panel.extend({
             const name = (model.get('annotation') || {}).name || '未命名标注';
             events.trigger('h:confirmDialog', {
                 title: 'Warning',
-                message: `确定删除所有标注?`,
+                message: `确定删除标注?`,
                 submitButton: 'Delete',
                 onSubmit: () => {
                     this.trigger('h:deleteAnnotation', model); // delete DrawWidget panel from page
@@ -257,7 +258,7 @@ var AnnotationSelector = Panel.extend({
     _editAnnotation(evt) {
         var id = $(evt.currentTarget).parents('.h-annotation').data('id');
         this.editAnnotation(this.collection.get(id));
-        // console.log('(#####)AnnotationSelector.js:_editAnnotation():id = ' + id);
+        console.log('(#####)AnnotationSelector.js:_editAnnotation():id = ' + id);
         // debugger;
     },
 

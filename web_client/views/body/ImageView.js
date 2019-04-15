@@ -619,9 +619,12 @@ var ImageView = View.extend({
     },
 
     _editAnnotation(model) {
+        console.log('(#####)ImageView.js:editAnnotation():model = ', model);
         this.activeAnnotation = model;
         this._removeDrawWidget();
-        if (model) {
+        // if (model) {
+        // pv modified: make heatmap annotation can not be modified
+        if (model && model.attributes && model.attributes.annotation && model.attributes.annotation.name !== 'heatmap') {
             this.drawWidget = new DrawWidget({
                 parentView: this,
                 image: this.model,

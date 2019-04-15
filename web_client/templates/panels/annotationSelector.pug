@@ -2,10 +2,10 @@ block content
   .btn-group.h-hide-show-buttons(role='group')
     .btn-group.btn-group-sm(role='group')
       button.btn-sm.h-show-all-annotations(type='button', title='显示全部标注')
-        | #[span.icon-eye] 显示全部标注
+        | #[span.icon-eye] 显示标注
     .btn-group.btn-group-sm(role='group')
       button.btn-sm.h-hide-all-annotations(type='button', title='隐藏全部标注')
-        | #[span.icon-eye] 隐藏全部标注
+        | #[span.icon-eye] 隐藏标注
 
   - var groups = _.keys(annotationGroups);
   - groups.sort();
@@ -33,7 +33,7 @@ block content
             - classes.push('h-highlight-annotation')
           .h-annotation(data-id=annotation.id, class=classes)
             if loading
-              span.icon-spin3.animate-spin.h-float-left
+              span.icon-arrows-ccw.animate-spin.h-float-left
             else if displayed
               span.icon-light-up.h-toggle-annotation.h-float-left(
                 data-toggle='tooltip', title='隐藏标注')
@@ -45,13 +45,13 @@ block content
             span.h-annotation-right
               if writeAccess(annotation)
                 span.icon-cancel.h-delete-annotation(
-                    data-toggle='tooltip', title='Remove annotation')
+                    data-toggle='tooltip', title='删除')
                 span.icon-cog.h-edit-annotation-metadata(
-                    data-toggle='tooltip', title='Edit annotation')
+                    data-toggle='tooltip', title='编辑')
               a(href=annotation.downloadUrl().replace(/\/download$/, ''),
                   download=name + '.json')
                 span.icon-download.h-download-annotation(
-                    data-toggle='tooltip', title='Download annotation')
+                    data-toggle='tooltip', title='下载')
             span#h-annotation-name-pv.h-annotation-name(title=name)
 
   .checkbox.h-annotation-toggle

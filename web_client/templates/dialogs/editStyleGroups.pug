@@ -8,15 +8,26 @@
       .modal-body
         - var label = model.get('label') || {};
         .form-group
+          label(for='h-group-name') 标注名称
           if newStyle
             .input-group
-              input.form-control.input-sm.h-new-group-name(type='hidden')
+              input.form-control.input-sm.h-new-group-name(type='text')
               .input-group-btn
                 button.btn.btn-default.btn-sm.h-save-new-style
                   span.icon-ok
           else
             .input-group
-              input.form-control.h-group-name(type='hidden', value='default')
+              select.form-control.h-group-name
+                each style in collection.sortBy('id')
+                  - var selected = model.id === style.id
+                  option(value=style.get('id'), selected=selected)
+                    = style.get('id')
+              .input-group-btn
+                if collection.length > 1
+                  button.btn.btn-default.h-delete-style
+                    span.icon-minus(data-toggle='tooltip', title='Delete the listed style')
+                button.btn.btn-default.h-create-new-style
+                  span.icon-plus(data-toggle='tooltip', title='Create a new style')
         .form-group
           label(for='h-element-line-width') 线宽
           input#h-element-line-width.h-style-def.input-sm.form-control(
